@@ -29,7 +29,7 @@ class ApiInstagram:
         self.length = 0
         self.sender_email = 'EMAIL_HOST_USER'
         self.receiver_email = 'Your Email'
-        self.Login()
+        
     def Login(self):
         try:
             self.client.login(self.username, self.password)
@@ -113,11 +113,10 @@ class ApiInstagram:
             self.MakeLikeAndComment(NewPost[0].id)
             self.MakeStory()
             self.post_reel(NewPost[0].caption_text)
+            self.client.logout()
+
             return True
         else:
-            print(NewPost[0].pk)
-            print(current.Value)
-            
             if current.Value == NewPost[0].pk:
                 return False
             else:
@@ -131,6 +130,8 @@ class ApiInstagram:
                 self.Send_EmailOld()
                 self.Send_EmailNew(self.Top.url)
                 self.MakeStory()
+                self.client.logout()
+
                 return True
             
     def MakeLikeAndComment(self,id):
@@ -160,6 +161,7 @@ class ApiInstagram:
        
 API_Start = ApiInstagram()
 def Job():
+    API_Start.Login()
     API_Start.GetNewPost('i3oma')
 
     
